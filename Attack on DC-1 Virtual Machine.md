@@ -1,11 +1,14 @@
 # **Attack on DC-1 Virtual Machine**
 This activity is based on the walkthrough that can be found at the following link.
 https://www.hackingarticles.in/dc-1-vulnhub-walkthrough/.
+
 ## Preliminary information
 
-- Type some Markdown on the left
-- See HTML in the right
-- ✨Magic ✨
+- The attacking machine is a Kali VM in the same network of the target machine
+- The target machine is a VM that can be downloaded at https://www.vulnhub.com/entry/dc-1-1,292/#download
+- The objective of the attack is: Gaining root privileges on the target machine
+- The threat model is: The attacker can communicate with the target machine
+- The attack will be described in terms of the MITRE ATT&CK framework.
 
 ## Features
 
