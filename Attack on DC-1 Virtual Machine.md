@@ -12,7 +12,7 @@ https://www.hackingarticles.in/hack-the-lampsecurity-ctf-7-ctf-challenge/
 
 ### **Discovery**
 
-![firstCommands](Screen 1.png)
+![firstCommands](Screen1.png)
 
 The first phase consists in finding information about the target useful for obtaining initial access. For this phase I will use `nmap`, a network exploration tool installed by default on Kali. The first command to execute is `ip addr`, that allows to see the IP address of the attacker machine (`192.168.56.101`) and to obtain the network number (`192.168.56.0/24`). To obtain the IP address of the target machine, I execute `nmap 192.168.56.0/24`, a command that finds all tries to contact all the IP addresses in the network number specified and lists for each of them the reachable port numbers. This command allows to implement the following two techniques.
 
@@ -35,7 +35,11 @@ To proceed, since I don't know the credentials, I try using a SQL injection, tha
 
 To mantain access to the system even across restarts or in the case that the bug causing a SQL injection vulnerability is fixed, we want to upload a web shell on the target machine, to do so we go to the page Manage Offerings &rarr; Reading Room, where it is possible to upload files for logged users. So we click on Add New, fill the form (if this was a real attack it could be useful to disguise this action as a legitimate one, by putting a realistic name and description). The web shell I inject is already available on every Kali machine at the path `/usr/share/webshells/php/php-reverse-shell.php`, the only confiugration required is changing it with the appropriate IP address (the one of the attacker machine) and port number (in this case I use the default one, 1234) that the web shell will try to connect to.
 
-### **Persistence**
+### **Discovery**
+
+#### File And Directory Discovery
+
+### **Execution**
 
 #### Command and Scripting Interpreter
 
