@@ -14,7 +14,7 @@ https://www.hackingarticles.in/hack-the-lampsecurity-ctf-7-ctf-challenge/
 
 ![firstCommands](Screen 1.png)
 
-The first phase consists in finding information about the target useful for obtaining initial access. For this phase I will use `nmap`, a network exploration tool installed by default on Kali. The first command to execute is `ip addr`, that allows to see the IP address of the attacker machine (`192.168.56.101`) and to obtain the network number (`192.168.56.0/24`). To obtain the IP address of the target machine, I execute `nmap 192.168.56.0/24`, a command that finds all tries to contact all the IP addresses in the network number specified and lists for each of them the reachable port numbers. This command allows to implement these two techniques of the attack.
+The first phase consists in finding information about the target useful for obtaining initial access. For this phase I will use `nmap`, a network exploration tool installed by default on Kali. The first command to execute is `ip addr`, that allows to see the IP address of the attacker machine (`192.168.56.101`) and to obtain the network number (`192.168.56.0/24`). To obtain the IP address of the target machine, I execute `nmap 192.168.56.0/24`, a command that finds all tries to contact all the IP addresses in the network number specified and lists for each of them the reachable port numbers. This command allows to implement the following two techniques.
 
 #### Remote System Discovery 
 
@@ -22,11 +22,18 @@ The IP address of the target machine is `192.168.56.102`.
 
 #### Network Service Discovery
 
-There are several ports reachable, the ones of interest to us are 80 and 8080, both used for HTTP traffic. By visiting on the browser the home page (URL: ```http://192.168.56.102```), we can observe that there is not anything useful to continue the attack, so I try contacting the other port number (URL: ```http://192.168.56.102:8080```).
+There are several ports reachable, the ones of interest to us are 80 and 8080, both used for HTTP traffic. By visiting on the browser the home page (URL: ```http://192.168.56.102```), we can observe that there is not anything useful to continue the attack, so I try contacting the other port number (URL: ```http://192.168.56.102:8080```). In this page, there is a login form.
 
-## Tech
+### Initial Access 
 
+#### Exploit Public-Facing Application
+To proceed, since I don't know the credentials, I try using a SQL injection, that is inserting a username value carefully constructed (the exploit is the HTTP request that answers the form, the payload is the username value) to cause a DBMS to consider it as SQL code inside a query instead of a normal username. For the password, it's possible to leave the field empty, it is not relevant since it will not be considered due to the injected exploit.
 
+### Persistence
+
+#### Server Software Component &rarr; Web Shell
+
+To mantain access to the system even across restarts or in the case that the bug causing a SQL injection vulnerability is fixed, we want to upload a web shell on the target machine, to do so we go to the page Manage Offerings &rarr; Reading Room
 
 #### Building for source
 
@@ -55,6 +62,3 @@ docker run -d -p 8000:8080 --restart=always --cap-add=SYS_ADMIN --name=dillinger
 ```
 
 > Note: `--capt-add=SYS-ADMIN` is required for PDF rendering.
-
-Verify the deployment by navigating to your server address in
-your preferred browser.
