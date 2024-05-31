@@ -22,18 +22,22 @@ The IP address of the target machine is `192.168.56.102`.
 
 #### Network Service Discovery
 
-There are several ports reachable, the ones of interest to us are 80 and 8080, both used for HTTP traffic. By visiting on the browser the home page (URL: ```http://192.168.56.102```), we can observe that there is not anything useful to continue the attack, so I try contacting the other port number (URL: ```http://192.168.56.102:8080```). In this page, there is a login form.
+There are several ports reachable, the ones of interest to us are 80 and 8080, both used for HTTP traffic. By visiting on the browser the home page (URL: ```http://192.168.56.102```), we can observe that there is not anything useful to continue the attack, so I try contacting the other port number (URL: `http://192.168.56.102:8080`). In this page, there is a login form.
 
-### Initial Access 
+### **Initial Access**
 
 #### Exploit Public-Facing Application
 To proceed, since I don't know the credentials, I try using a SQL injection, that is inserting a username value carefully constructed (the exploit is the HTTP request that answers the form, the payload is the username value) to cause a DBMS to consider it as SQL code inside a query instead of a normal username. For the password, it's possible to leave the field empty, it is not relevant since it will not be considered due to the injected exploit.
 
-### Persistence
+### **Persistence**
 
 #### Server Software Component &rarr; Web Shell
 
-To mantain access to the system even across restarts or in the case that the bug causing a SQL injection vulnerability is fixed, we want to upload a web shell on the target machine, to do so we go to the page Manage Offerings &rarr; Reading Room
+To mantain access to the system even across restarts or in the case that the bug causing a SQL injection vulnerability is fixed, we want to upload a web shell on the target machine, to do so we go to the page Manage Offerings &rarr; Reading Room, where it is possible to upload files for logged users. So we click on Add New, fill the form (if this was a real attack it could be useful to disguise this action as a legitimate one, by putting a realistic name and description). The web shell I inject is already available on every Kali machine at the path `/usr/share/webshells/php/php-reverse-shell.php`, the only confiugration required is changing it with the appropriate IP address (the one of the attacker machine) and port number (in this case I use the default one, 1234) that the web shell will try to connect to.
+
+### **Persistence**
+
+#### Command and Scripting Interpreter
 
 #### Building for source
 
