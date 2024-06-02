@@ -52,17 +52,27 @@ To execute the web shell, it is necessary to know where the php file has been st
 
 By analyzing the output of `dirb https://192.168.56.102` in the browser, I found out that the directory containing the web shell is `/assets`. 
 
-### **Execution & Privilege Escalation**
+### **Execution**
 
-In order to connect to the web shell, I will use `netcat`, a tool already installed in Kali used to establish and use a network connection. In this case I use the command `netcat -lvnp 1234`, that spawns a server process that listens on the port 1234. To start the connection execute the web shell, click on the corresponding file at the URL `https://192.168.56.102/assets`.
+#### Command and Scripting Interpreter
 
-#### Command and Scripting Interpreter &rarr; Unix Shell
+In order to connect to the web shell, I will use `netcat`, a tool already installed in Kali used to establish and use a network connection. In this case I use the command `netcat -lvnp 1234`, that spawns a server process that listens on the port 1234. To start the connection execute the web shell, click on the corresponding file at the URL `https://192.168.56.102/assets`. To have a more complete shell, I invoke the command `python -c 'import pty;pty.spawn("/bin/bash")'`.
 
-To have a more complete shell, I invoke the command `python -c 'import pty;pty.spawn("/bin/bash")'`
+### **Privilege escalation**
+
+#### Valid Accounts &rarr; Default Accounts
+
+Before I used a SQL injection to gain initial access, therefore a DBMS is being executed on the target machine, now the objective is to access the databases inside the target machine with root privileges. I abuse the default credentials composed of user: root and password: *blank*, with the command `mysql -u root`.
+
+![Privilege_Escalation](Screen5.png)
 
 ### **Credential Access**
 
+#### Brute Force &rarr; Credentials from Password Stores
 
+Now the objective is to gain guessing material leveraging the root privileges I have just obtained, to do so I invoke `show databases;`, looking at the output, website probably contains the table with the hashes of passwords, to see its tables I invoke `use website;` and then `show tables;`. Finally, the read the content of the target table, use `select username,password from users;`. The the users are listed in cleartext, the hashes of the passwords are in MD5 format.
+
+![Guessing_Material](Screen6.png)
 
 #### Brute Force &rarr; Password Cracking
 
