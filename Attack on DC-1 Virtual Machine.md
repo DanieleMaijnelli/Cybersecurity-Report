@@ -38,7 +38,7 @@ To proceed, since I don't know the credentials, I try using a SQL injection, tha
 
 #### Server Software Component &rarr; Web Shell
 
-To mantain access to the system even across restarts or in the case that the bug causing a SQL injection vulnerability is fixed, we want to upload a web shell on the target machine, to do so we go to the page "Manage Offerings" &rarr; "Reading Room", where it is possible to upload files for logged users. So we click on "Add New", fill the form (if this was a real attack it could be useful to disguise this action as a legitimate one, by putting a realistic name and description). The web shell I inject is already available on every Kali machine at the path `/usr/share/webshells/php/php-reverse-shell.php`, the only configuration required is modifying the script of the web shell with the appropriate IP address (the one of the attacker machine) and port number (in this case I use the default one, 1234) that the web shell will try to connect to.
+To mantain access to the system even across restarts or in the case that the bug causing a SQL injection vulnerability is fixed, we want to upload a web shell on the target machine, to do so we go to the page "Manage Offerings" &rarr; "Reading Room", where it is possible to upload files for logged users. So we click on "Add New", fill the form (if this was a real attack it could be useful to disguise this action as a legitimate one, by putting a realistic name and description). The web shell I inject is already available on every Kali machine at the path `/usr/share/webshells/php/php-reverse-shell.php`, the only configuration required is modifying the script of the web shell with the appropriate IP address (the one of the attacker machine) and port number (in this case I use the default one, 1234) that the web shell will try to connect to. It is important to observe that the web shell installed on the victim machine is not used with HTTP, an HTTP request will only create a process that will execute a shell and then connect its input and output to a TCP connection (the TCP connections goes from the target machine to `IP_address:port_number` specified in the file of the web shell). Therefore, more precisely the uploaded file is a reverse shell on a web server, not a web shell. 
 
 ![Web_Shell](Screen3.png)
 
@@ -50,11 +50,23 @@ To execute the web shell, it is necessary to know where the php file has been st
 
 #### File And Directory Discovery
 
-By analyzing the output of `dirb https://192.168.56.102` in the browser, I found out that the directory containing the web shell is `/assets`. To execute it, click on the corresponding file.
+By analyzing the output of `dirb https://192.168.56.102` in the browser, I found out that the directory containing the web shell is `/assets`. 
 
-### **Execution**
+### **Execution & Privilege Escalation**
 
-#### Command and Scripting Interpreter
+In order to connect to the web shell, I will use `netcat`, a tool already installed in Kali used to establish and use a network connection. In this case I use the command `netcat -lvnp 1234`, that spawns a server process that listens on the port 1234. To start the connection execute the web shell, click on the corresponding file at the URL `https://192.168.56.102/assets`.
+
+#### Command and Scripting Interpreter &rarr; Unix Shell
+
+To have a more complete shell, I invoke the command `python -c 'import pty;pty.spawn("/bin/bash")'`
+
+### **Credential Access**
+
+
+
+#### Brute Force &rarr; Password Cracking
+
+
 
 ### **Credits**
 This activity is based on the walkthrough that can be found at the following link.
