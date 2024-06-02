@@ -62,7 +62,7 @@ In order to connect to the web shell, I will use `netcat`, a tool already instal
 
 #### Valid Accounts &rarr; Default Accounts
 
-Before I used a SQL injection to gain initial access, therefore a DBMS is being executed on the target machine, now the objective is to access the databases inside the target machine with root privileges. I abuse the default credentials composed of user: root and password: *blank*, with the command `mysql -u root`.
+Before I used a SQL injection to gain initial access, therefore a DBMS is being executed on the target machine, now the objective is to access the databases inside the target machine with root privileges. I abuse the default credentials composed of **username:root** and **password:*blank***, with the command `mysql -u root`.
 
 ![Privilege_Escalation](Screen5.png)
 
@@ -70,13 +70,27 @@ Before I used a SQL injection to gain initial access, therefore a DBMS is being 
 
 #### Brute Force &rarr; Credentials from Password Stores
 
-Now the objective is to gain guessing material leveraging the root privileges I have just obtained, to do so I invoke `show databases;`, looking at the output, website probably contains the table with the hashes of passwords, to see its tables I invoke `use website;` and then `show tables;`. Finally, the read the content of the target table, use `select username,password from users;`. The the users are listed in cleartext, the hashes of the passwords are in MD5 format.
+Now the objective is to gain guessing material leveraging the root privileges I have just obtained, to do so I invoke `show databases;`, looking at the output, website contains the table with the hashes of passwords, to see its tables I invoke `use website;` and then `show tables;`. Finally, to read the content of the target table, use `select username,password from users;`. The the users are listed in cleartext, the hashes of the passwords are in MD5 format.
 
 ![Guessing_Material](Screen6.png)
 
 #### Brute Force &rarr; Password Cracking
 
+Now I use Hashcat (a password cracking tool) to obtain the passwords corresponding to the hashes found in the database. in order to perform this step, I invoke `hashcat -m 0 -a 0 -o /home/daniele/Documents/passwords.txt /home/daniele/Documents/hashes.txt /usr/share/wordlists/rockyou.txt`.
 
+- `-o /home/daniele/Documents/passwords.txt` specifies the path of output file, where the passwords will be written.
+- `/home/daniele/Documents/hashes.txt` is the path of the file containing the hashes.
+- `/usr/share/wordlists/rockyou.txt` is the path of the dictionary, this one in particular is already installed in every Kali machine.
+
+![Passwords](Screen7.png)
+
+### **Privilege escalation**
+
+#### Valid Accounts &rarr; Local Accounts;
+
+Now trying the passwords we just found with the corresponding username to perform an ssh login with the target machine, hoping in a credential overlap, I discover that **user:brian** and **password:my2cents** are valid. So, the next steps are invoking `ssh brian@192.168.56.102`. Then to check sudo rights for him invoke `sudo -l`. From the result it appears that he has every sudo right. To complete the attack, I invoke a shell as root on the target machine with `sudo su`.
+
+![Root_Shell](Screen8.png)
 
 ### **Credits**
 This activity is based on the walkthrough that can be found at the following link.
