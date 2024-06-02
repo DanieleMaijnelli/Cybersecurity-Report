@@ -14,7 +14,7 @@ https://www.hackingarticles.in/hack-the-lampsecurity-ctf-7-ctf-challenge/
 
 The first phase consists in finding information about the target useful for obtaining initial access. For this phase I will use `nmap`, a network exploration tool installed by default on Kali. The first command to execute is `ip addr`, that allows to see the IP address of the attacker machine (`192.168.56.101`) and to obtain the network number (`192.168.56.0/24`). To obtain the IP address of the target machine, I execute `nmap 192.168.56.0/24`, a command that finds all tries to contact all the IP addresses in the network number specified and lists for each of them the reachable port numbers. This command allows to implement the following two techniques.
 
-![firstCommands](Screen1.png)
+![First_Commands](Screen1.png)
 
 #### Remote System Discovery 
 
@@ -24,7 +24,7 @@ The IP address of the target machine is `192.168.56.102`.
 
 There are several ports reachable, the ones of interest to us are 80 and 8080, both used for HTTP traffic. By visiting on the browser the home page (URL: ```http://192.168.56.102```), we can observe that there is not anything useful to continue the attack, so I try contacting the other port number (URL: `http://192.168.56.102:8080`). In this page, there is a login form.
 
-![firstCommands](Screen1.png)
+![SQL_Injection](Screen2.png)
 
 ### **Initial Access**
 
