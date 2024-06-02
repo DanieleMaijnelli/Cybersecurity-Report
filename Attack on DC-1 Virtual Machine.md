@@ -40,11 +40,17 @@ To proceed, since I don't know the credentials, I try using a SQL injection, tha
 
 To mantain access to the system even across restarts or in the case that the bug causing a SQL injection vulnerability is fixed, we want to upload a web shell on the target machine, to do so we go to the page "Manage Offerings" &rarr; "Reading Room", where it is possible to upload files for logged users. So we click on "Add New", fill the form (if this was a real attack it could be useful to disguise this action as a legitimate one, by putting a realistic name and description). The web shell I inject is already available on every Kali machine at the path `/usr/share/webshells/php/php-reverse-shell.php`, the only configuration required is modifying the script of the web shell with the appropriate IP address (the one of the attacker machine) and port number (in this case I use the default one, 1234) that the web shell will try to connect to.
 
-![WebShell](Screen3.png)
+![Web_Shell](Screen3.png)
 
 ### **Discovery**
 
+To execute the web shell, it is necessary to know where the php file has been stored inside the target machine. To perform this step, I will use `dirb`, it is a directory scanner already included in Kali that searches web servers for hidden files, directories, and pages. It works by sending several HTTP requests to the web server and analyzing the responses, each request differs in the third part of the URL, that is selected based on a customizable dictionary (here I use the default one). 
+
+![Dirb_Output](Screen4.png)
+
 #### File And Directory Discovery
+
+By analyzing the output of `dirb https://192.168.56.102` in the browser, I found out that the directory containing the web shell is `/assets`. To execute it, click on the corresponding file.
 
 ### **Execution**
 
