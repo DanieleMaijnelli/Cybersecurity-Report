@@ -27,7 +27,7 @@ The IP address of the target machine is `192.168.56.102`. Since the machines are
 
 #### Network Service Discovery
 
-There are several ports reachable, the ones of interest to us are 80 and 8080, both used for HTTP traffic. By visiting the home page (URL: ```http://192.168.56.102```) on the browser, it appears tat there is nothing useful to continue the attack, so I try contacting the other port number (URL: `http://192.168.56.102:8080`). Here there is a login page that can be abused to gain initial access.
+There are several ports reachable, the ones of interest to us are 80, 8080 and 22 (this one used later on), both used for HTTP traffic. By visiting the home page (URL: ```http://192.168.56.102```) on the browser, it appears tat there is nothing useful to continue the attack, so I try contacting the other port number (URL: `http://192.168.56.102:8080`). Here there is a login page that can be abused to gain initial access.
 
 ### **Initial Access**
 
@@ -86,12 +86,14 @@ Now the objective is to gain guessing material leveraging the root privileges ha
 #### Brute Force &rarr; Password Cracking
 
 Now I use Hashcat (a password cracking tool) to obtain the passwords corresponding to the hashes found in the database. In order to perform this step, I invoke
-`hashcat -m 0 -a 0 -o /home/daniele/Documents/passwords.txt /home/daniele/Documents/hashes.txt /usr/share/wordlists/rockyou.txt`.
+
+`hashcat -m 0 -a 0 -o /home/daniele/Documents/passwords.txt /home/daniele/Documents/hashes.txt /usr/share/wordlists/rockyou.txt`
+
 Regarding the command:
 
-- `-o /home/daniele/Documents/passwords.txt` specifies the path of output file, where the passwords will be written.
+- `-o /home/daniele/Documents/passwords.txt` specifies the path of the output file, where the cracked passwords will be written.
 - `/home/daniele/Documents/hashes.txt` is the path of the file containing the hashes.
-- `/usr/share/wordlists/rockyou.txt` is the path of the dictionary, this one in particular is already installed in every Kali machine.
+- `/usr/share/wordlists/rockyou.txt` is the path of the password dictionary, this one in particular is already installed in every Kali machine.
 
 ![Passwords](Screen7.png)
 
