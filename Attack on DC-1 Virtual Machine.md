@@ -101,6 +101,6 @@ Regarding the command:
 
 #### Valid Accounts &rarr; Local Accounts
 
-To become root on the target machine, I try the passwords we just found with the corresponding usernames to perform an ssh login with the target machine, hoping in a credential overlap. The result is that **user:brian** and **password:my2cents** are valid. So, the next step is invoking `ssh brian@192.168.56.102` and inserting the password. Then in order to check sudo rights for him invoke `sudo -l`. From the result it appears that he has every sudo right. To complete the attack, I invoke a shell as root on the target machine with `sudo su`.
+To become root on the target machine, I try the passwords we just found with the corresponding usernames to perform an ssh login with the target machine, hoping in a credential overlap. The result is that **user:brian** and **password:my2cents** are valid. So, the next step is invoking `ssh brian@192.168.56.102` and inserting the password. Then in order to check sudo rights for him I invoke `sudo -l`. From the result it appears that he has every sudo right. To complete the attack, I invoke a shell as root on the target machine with `sudo su`.
 
 ![Root_Shell](Screen8.png)
