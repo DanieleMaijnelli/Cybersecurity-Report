@@ -11,7 +11,9 @@
 - The target machine is a VM that can be downloaded at https://www.vulnhub.com/entry/lampsecurity-ctf7,86/
 - The objective of the attack is: Gaining root privileges on the target machine
 - The threat model is: The attacker can communicate with the target machine
-- The attack will be described in terms of the MITRE ATT&CK framework (Tactics and Techniques).
+- The attack will be described in terms of the MITRE ATT&CK framework (Tactics and Techniques)
+- This activity is based on the walkthrough that can be found at the following link
+https://www.hackingarticles.in/hack-the-lampsecurity-ctf-7-ctf-challenge/
 
 ### **Discovery**
 
@@ -91,7 +93,3 @@ Now I use Hashcat (a password cracking tool) to obtain the passwords correspondi
 Now trying the passwords we just found with the corresponding username to perform an ssh login with the target machine, hoping in a credential overlap, I discover that **user:brian** and **password:my2cents** are valid. So, the next steps are invoking `ssh brian@192.168.56.102`. Then to check sudo rights for him invoke `sudo -l`. From the result it appears that he has every sudo right. To complete the attack, I invoke a shell as root on the target machine with `sudo su`.
 
 ![Root_Shell](Screen8.png)
-
-### **Credits**
-This activity is based on the walkthrough that can be found at the following link.
-https://www.hackingarticles.in/hack-the-lampsecurity-ctf-7-ctf-challenge/
