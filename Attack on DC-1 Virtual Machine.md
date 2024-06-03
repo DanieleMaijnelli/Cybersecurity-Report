@@ -45,7 +45,9 @@ Now I know that the target machine is using MySQL and also the whole query that 
 
 #### Server Software Component &rarr; Web Shell
 
-To mantain access to the system even across restarts or in the case that the bug causing a SQL injection vulnerability is fixed, we want to upload a web shell on the target machine, to do so click "Manage Offerings" &rarr; "Reading Room", where it is possible to upload files for logged users. So we click on "Add New", fill the form (if this was a real attack it could be useful to disguise this action as a legitimate one, by putting a realistic name and description). The web shell I inject is already available on every Kali machine at the path `/usr/share/webshells/php/php-reverse-shell.php`, the only configuration required is modifying the script of the web shell with the appropriate IP address (the one of the attacker machine) and port number (in this case I use the default one, 1234) that the web shell will try to connect to. It is important to observe that the web shell installed on the victim machine is not used with HTTP, an HTTP request will only create a process that will execute a shell and then connect its input and output to a TCP connection (the TCP connections goes from the target machine to `IP_address:port_number` specified in the file of the web shell). Therefore, more precisely the uploaded file is a reverse shell on a web server, not a web shell. 
+To mantain access to the system even across restarts or in the case that the bug causing a SQL injection vulnerability is fixed, we want to upload a web shell on the target machine, the objective is to find a page that allows to upload files. Exploring the website, eventually it will be discovered that such a page is reachable for logged users by clicking on "Manage Offerings" &rarr; "Reading Room".
+To continue, click on "Add New" and fill the form (if this was a real attack it could be useful to disguise this action as a legitimate one, by putting a realistic name and description for the uploaded file). The web shell I inject is already available on every Kali machine at the path `/usr/share/webshells/php/php-reverse-shell.php`, the only configuration required is modifying the script of the web shell with the appropriate IP address (the one of the attacker machine) and port number (in this case I use the default one, 1234) that the web shell will try to connect to.
+It is important to observe that the web shell installed on the victim machine is not used with HTTP, an HTTP request will trigger the target machine to create a process that will execute a shell and then connect its input and output to a TCP connection (the TCP connection goes from the target machine to `IP_address:port_number` specified in the file of the web shell). Therefore, more precisely the uploaded file is a reverse shell on a web server, not a web shell. 
 
 ![Web_Shell](Screen3.png)
 
@@ -57,13 +59,13 @@ To execute the web shell, it is necessary to know where the php file has been st
 
 #### File And Directory Discovery
 
-By analyzing the output of `dirb https://192.168.56.102` in the browser, I found out that the directory containing the web shell is `/assets`. 
+By analyzing the output of `dirb https://192.168.56.102` in the browser, it's easy to discover that the directory containing the web shell is `/assets`. 
 
 ### **Execution**
 
 #### Command and Scripting Interpreter
 
-In order to connect to the web shell, I will use `netcat`, a tool already installed in Kali used to establish and use a network connection. In this case I use the command `netcat -lvnp 1234`, that spawns a server process that listens on the port 1234. To start the connection execute the web shell, click on the corresponding file at the URL `https://192.168.56.102/assets`. To have a more complete shell, I invoke the command `python -c 'import pty;pty.spawn("/bin/bash")'`.
+In order to connect to the web shell, I will use `netcat`, a tool already installed in Kali used to establish and use a network connection. In this case I use the command `netcat -lvnp 1234`, that spawns a server process that listens on the port 1234. Now it is time to execute the web shell, to do so click on the corresponding php file at the URL `https://192.168.56.102/assets`. To have a more complete shell, I invoke the command `python -c 'import pty;pty.spawn("/bin/bash")'`.
 
 ### **Privilege escalation**
 
@@ -77,7 +79,7 @@ Before I used a SQL injection to gain initial access, therefore a DBMS is being 
 
 #### Brute Force &rarr; Credentials from Password Stores
 
-Now the objective is to gain guessing material leveraging the root privileges I have just obtained, to do so I invoke `show databases;`, looking at the output, website contains the table with the hashes of passwords, to see its tables I invoke `use website;` and then `show tables;`. Finally, to read the content of the target table, use `select username,password from users;`. The the users are listed in cleartext, the hashes of the passwords are in MD5 format.
+Now the objective is to gain guessing material leveraging the root privileges have just been obtained, to do so I invoke `show databases;`, looking at the output, the `website` database contains the table with the hashes of the passwords, to see its tables I invoke `use website;` and then `show tables;`. Finally, to read the content of the target table, invoke `select username,password from users;`. The users are listed in cleartext, the hashes of the passwords are in MD5 format.
 
 ![Guessing_Material](Screen6.png)
 
