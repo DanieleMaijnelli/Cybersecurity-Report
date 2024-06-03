@@ -85,7 +85,9 @@ Now the objective is to gain guessing material leveraging the root privileges ha
 
 #### Brute Force &rarr; Password Cracking
 
-Now I use Hashcat (a password cracking tool) to obtain the passwords corresponding to the hashes found in the database. in order to perform this step, I invoke `hashcat -m 0 -a 0 -o /home/daniele/Documents/passwords.txt /home/daniele/Documents/hashes.txt /usr/share/wordlists/rockyou.txt`.
+Now I use Hashcat (a password cracking tool) to obtain the passwords corresponding to the hashes found in the database. In order to perform this step, I invoke
+`hashcat -m 0 -a 0 -o /home/daniele/Documents/passwords.txt /home/daniele/Documents/hashes.txt /usr/share/wordlists/rockyou.txt`.
+Regarding the command:
 
 - `-o /home/daniele/Documents/passwords.txt` specifies the path of output file, where the passwords will be written.
 - `/home/daniele/Documents/hashes.txt` is the path of the file containing the hashes.
