@@ -97,7 +97,9 @@ Regarding the command:
 
 - `-o /home/daniele/Documents/passwords.txt` specifies the path of the output file, where the cracked passwords will be written.
 - `/home/daniele/Documents/hashes.txt` is the path of the file containing the hashes.
-- `/usr/share/wordlists/rockyou.txt` is the path of the password dictionary, this one in particular is already installed in every Kali machine.
+- `/usr/share/wordlists/rockyou.txt` is the path of the password dictionary, this one in particular is already installed in every Kali machine, to make it more efficient it could be possible to use a dictionary of hashes, but since the amount of time required to perform this step in negligible, I use a dictionary of passwords already installed.
+- `-m 0` specifies that the hash type is MD5.
+- `-a 0` specifies the attack type, in this case simple password cracking
 
 ![Passwords](Screen7.png)
 
