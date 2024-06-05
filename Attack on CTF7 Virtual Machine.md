@@ -83,7 +83,7 @@ Before I used a SQL injection to gain initial access and the error message revea
 
 #### Brute Force &rarr; Credentials from Password Stores
 
-Now the objective is to gain guessing material leveraging the root privileges have just been obtained, to do so I invoke `show databases;`, looking at the output, the `website` database contains the table with the hashes of the passwords, to see its tables I invoke `use website;` (to indicate to MySQL that the following command refer to this database) and then `show tables;`. Finally, to read the content of the target table, invoke `select username,password from users;`. The users are listed in cleartext, the hashes of the passwords are in MD5 format.
+Now the objective is to gain guessing material leveraging the root privileges have just been obtained, to do so I invoke `show databases;`, looking at the output, the `website` database contains the table with the hashes of the passwords, to see its tables I invoke `use website;` (to indicate to MySQL that the following command refer to this database) and then `show tables;`. Finally, to read the content of the target table, invoke `select username,password from users;`. The users are listed in cleartext, the hashes of the passwords are in MD5 format. The hash type has been identified by putting one the stolen hashes (`e22f07b17f98e0d9d364584ced0e3c18`) on a website that automatically recognizes its type (https://hashes.com/en/tools/hash_identifier).
 
 ![Guessing_Material](Screen6.png)
 
